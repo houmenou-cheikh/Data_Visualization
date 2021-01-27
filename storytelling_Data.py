@@ -1,11 +1,13 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 
 data = pd.read_csv("raw_data.csv")
-print(data.head())
-print(data.info())
 app = dash.Dash(__name__)
 server = app.server
 
