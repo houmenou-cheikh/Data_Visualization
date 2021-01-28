@@ -35,7 +35,7 @@ fig = make_subplots(
 fig.add_trace(
     go.Scatter(
         x=data["DATE"].unique(),
-        y=data["TC"].unique(),
+        y=data["TC"],
         mode="lines",
         name="Total des cas positifs"
     ),
@@ -45,7 +45,7 @@ fig.add_trace(
 fig.add_trace(
     go.Scatter(
         x=data["DATE"].unique(),
-        y=data["TD"].unique(),
+        y=data["TD"],
         mode="lines",
         name="TOTAl des  DECES"
     ),
@@ -77,6 +77,7 @@ fig.update_layout(
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 fig0  = gos.Figure()
+
 
 markdown_text = """La pandémie de Covid-19 Écouter est une pandémie d'une maladie infectieuse émergente, 
 appelée la maladie à coronavirus 2019 ou Covid-19, provoquée par le coronavirus SARS-CoV-2,\n 
