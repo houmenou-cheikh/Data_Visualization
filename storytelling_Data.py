@@ -164,8 +164,7 @@ app.layout = html.Div(
         html.Br(),
         dcc.Link('page suivante', href='/page-2'),
 
-        # content will be rendered in this element
-        #html.Div(id='page-content')
+    
 
     ]
 )
