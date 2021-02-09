@@ -31,13 +31,14 @@ for pays in data["COUNTRY"].unique():
 fig = px.scatter_geo(data_3, locations= 'CODE',
                      hover_name='COUNTRY', size= "TD")
 
+
 fig1 = px.choropleth(data_3, color="TC", locations="CODE", hover_name='COUNTRY')
 fig1.add_trace(fig.data[0])
 
 fig1.update_traces(marker_color="rgba(0,0,0,0)" ,
                     selector=dict(type='scattergeo'))
 
-fig1.update_layout(height=700,
+fig1.update_layout(height=500,
                 title_text= "la répartition du nombre de cas totaux (TC) en fonction de leur localisation ",
                 showlegend=True)
 
@@ -45,16 +46,17 @@ fig1.update_layout(height=700,
 ########################################################################################################
 page_1_layout = html.Div([
     dbc.Alert(html.H1("Étude de l'impact de la covid-19 sur l'économie pour pays choisi ",
-                                    style={"fontSize": "42px", "color": "blue"},),),
+                                    style={"fontSize": "42px", "color": "blue"},),color='secondary',),
     
-    dcc.Dropdown(id='page-1-dropdown',
+    html.Br(),html.Br(),html.Br(),
+    dcc.Dropdown(id='page-1-dropdown',style={'color':"blue"},
         options=[{'label': i, 'value': i} for i in data["COUNTRY"].unique()],
         value='France'
     ),
 
-    html.Br(),
+    html.Br(),html.Br(),
     dcc.Graph(id='indicator-graphic'),
-
+    html.Br(),html.Br(),html.Br(),
     html.H1(" Vision globale du numbre de décées (TD) liés à la covid-19 en octobre 2020 ",
                                     style={"fontSize": "25px", "color": "blue"},),
     
@@ -65,14 +67,17 @@ page_1_layout = html.Div([
     html.Div(id='page-1-content'),
     html.Br(),
     dbc.Row([
-        dbc.Button(dcc.Link('Go to Page 2', href='/page-2'), size="lg", color="primary", 
-               style={"vertical-align": "left"}, className="mr-1"),
+        dbc.Button(dcc.Link('Go to Page 2', href='/page-2'),outline=True, color="warning", 
+                style={"vertical-align": "left"}, className="mr-1"),
 
-       dbc.Button(dcc.Link('Go to Page 3', href='/page-3'), size="lg", color="green",
-                 style={"vertical-align": "right"}, className="mr-1"),
+        dbc.Button(dcc.Link('Go to Page 3', href='/page-3'),outline=True, color="secondary",
+                    style={"vertical-align": "right"}, className="mr-1"),
 
-        dbc.Button(dcc.Link('Go to Page 4', href='/page-4'), size="lg", color="red",
-                 style={"vertical-align": "right"}, className="mr-1"),
+        dbc.Button(dcc.Link('Go to Page 4', href='/page-4'),outline=True, color="success",
+                    style={"vertical-align": "right"}, className="mr-1"),
+
+        dbc.Button(dcc.Link('Go at home', href='/'),outline=True, color="danger",
+                    style={"vertical-align": "right"}, className="mr-1"),
     ])
 ])
 #table = dbc.Table.from_dataframe(df, striped=True, bordered=True, hover=True)

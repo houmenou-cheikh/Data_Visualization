@@ -11,7 +11,8 @@ from page_4  import *
 
 
 print(dcc.__version__) # 0.6.0 or above is required
-app = dash.Dash()
+
+app = dash.Dash(__name__ ,external_stylesheets=["https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/cyborg/bootstrap.min.css"])#, external_stylesheets=external_stylesheets)
 
 app.config.suppress_callback_exceptions = True
 
@@ -19,6 +20,8 @@ app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
 ])
+server = app.server
+
 #########################################################################################
 # Page 1 callback
 @app.callback(Output('indicator-graphic', 'figure'),
@@ -41,9 +44,9 @@ def page_1_dropdown(value):
     fig2.add_trace(go.Scatter(x=data_pays["DATE_2"] , y=data_pays["STI"],
                         mode='lines+markers',
                         name='STI'))
-    return fig2
+    fig2.update_layout(height=400,)
 
- 
+    return fig2
 
 ##################################################################################################
 # Page 2
@@ -62,7 +65,7 @@ def page_2_radios(value):
 def update_graph_5(value,checklist_value): 
 
     df_plot = data_3[data_3.COUNTRY == f"{value}"]    
-    # ############################################## Plot ################################################     
+    ####################### Plot ############################     
     fig = go.Figure()    
     if "TC" in checklist_value:         
         fig=fig.add_trace(go.Scatter(x=df_plot.DATE_2, y=df_plot.TC, mode='lines+markers', name='Total Cases'))                  
@@ -82,20 +85,49 @@ def train_and_display(name):
     model = models[name]()
     model.fit(X_train, y_train)
 
-    x_range = np.linspace(X.min(), X.max(), 100)
+    x_range = np.linspace(X.min(), X.max(), 1000)
     y_range = model.predict(x_range.reshape(-1, 1))
     
     fig = go.Figure([
         go.Scatter(x=X_train.squeeze(), y=y_train, 
-                   name='train', mode='markers'),
+                   name='total décés train', mode='markers'),
         go.Scatter(x=X_test.squeeze(), y=y_test, 
-                   name='test', mode='markers'),
+                   name='total décés test', mode='markers'),
         go.Scatter(x=x_range, y=y_range, 
                    name='prediction')
     ])
 
     return fig
+#*********************************#
+@app.callback(
+    Output("graph_2", "figure"), 
+    [Input('page-4-dropdown', "value"),
+    Input("radiobutton", "value")])
+
+def prediction_pays(value,name):
+    print(name,value)
+    data_pays = data_3[data_3.COUNTRY == f"{value}"]
+    X1 = data_pays.TC.values[:, None]
+    X_train1, X_test1, y_train1, y_test1 = train_test_split(
+    X1, data_pays.TD , random_state=42)
+    model = models[name]()
+    model.fit(X_train1, y_train1)
+
+    x_range1 = np.linspace(X1.min(), X1.max(), 100)
+    y_range1 = model.predict(x_range1.reshape(-1, 1))
     
+    fig2 = go.Figure([
+        go.Scatter(x=X_train1.squeeze(), y=y_train1, 
+                   name='total décés train', mode='markers'),
+        go.Scatter(x=X_test1.squeeze(), y=y_test1, 
+                   name='total décés test', mode='markers'),
+        go.Scatter(x=x_range1, y=y_range1, 
+                   name='prediction')
+    ])
+    fig2.update_layout(height=500,
+                title_text= "Prédiction du nombre de décés en fonction des cas pour " + str(value),
+                showlegend=True)
+    return fig2
 #############################################################################################################
 # Index Page callback
 @app.callback(Output('page-content', 'children'),
@@ -110,11 +142,8 @@ def display_page(pathname):
     elif pathname == '/page-4':
         return page_4.page_4_layout
     else:
-        return '404'
+        return 'Error 404: page inexistante!!!'
 
-app.css.append_css({
-    'external_url': 'https://codepen.io/chriddyp/pen/bWLwgP.css'
-})
 
 if __name__ == '__main__':
     app.run_server(debug=True)

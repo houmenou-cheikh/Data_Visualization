@@ -10,6 +10,7 @@ from plotly.subplots import make_subplots
 import re
 import plotly.express as px
 from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
 
 
 ################################### nettoyage et redimentionnement des data #########################################
@@ -117,10 +118,11 @@ prononce l'état d'urgence de santé publique de portée internationale le 30 ja
 ########################################################################################################
 page_2_layout  = html.Div(
     children=[
-        html.H1(children="""Impact de la pandémie de Covid-19 sur l'économie mondiale:
-                            accent sur la réduction de la pauvreté et la croissance économique""",
-                style={"fontSize": "48px", "color": "blue"},),
-        
+        html.H1(children="""Impact de la pandémie de Covid-19 sur l'économie mondiale: """,
+                style={"fontSize": "46px", "color": "blue"},),
+                
+        html.H1(children="""accent sur la réduction de la pauvreté et la croissance économique""",
+                style={"fontSize": "38px", "color": "blue"},),
 #################
         dcc.Markdown(children=markdown_text),
         dcc.Link('source Wikipedia', href="https://fr.wikipedia.org/wiki/Pand%C3%A9mie_de_Covid-19"),
@@ -148,17 +150,24 @@ page_2_layout  = html.Div(
         html.Br(),
 
         html.H6(children="""Compraison du Nombre de cas totaux entre la France et les Etats-Unis """,
-                style={"fontSize": "48px", "color": "green"},),
+                style={"fontSize": "40px", "color": "green"},),
         html.Br(),
         dcc.Graph(figure = fig0),
+        html.Br(),
 #################
         dcc.Graph(figure = fig1),
 
 #################
 
-    html.Div(id='page-2-content'),
-    html.Br(),
-    dcc.Link('Go to Page 3', href='/page-3'),
-    html.Br(),
-    dcc.Link('Go back to home', href='/')
+    dbc.Row([
+        dbc.Button(dcc.Link('Go at home', href='/'),outline=True, color="danger",
+                    style={"vertical-align": "right"}, className="mr-1"),
+
+        dbc.Button(dcc.Link('Go to Page 3', href='/page-3'),outline=True, color="secondary",
+                    style={"vertical-align": "right"}, className="mr-1"),
+
+        dbc.Button(dcc.Link('Go to Page 4', href='/page-4'),outline=True, color="success",
+                    style={"vertical-align": "right"}, className="mr-1")
+    
+    ])
 ])

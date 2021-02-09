@@ -23,26 +23,41 @@ countries=data.COUNTRY.unique()
 
 ############################################## layout page 3 ######################################################
 
-page_3_layout = html.Div([
-    dbc.Row([dbc.Col(html.H1("The Impact of Covid-19 Pandemic on the Global Economy", style={'textAlign':'center'}))]),
-    dbc.Row([dbc.Col(html.Div(html.H3("ETUDE DE L'IMPACT DE lA COVID PAR PAYS OU GROUPES DE PAYS")),style={'textAlign':'center',"color": "blue"}),
-            dbc.Col(html.Div([html.Hr(),html.Br(),
-                            dcc.Dropdown(id='dropdown-3', multi=False, className="four columns",
+page_3_layout = html.Div([dbc.Alert(
+    "The Impact of Covid-19 Pandemic on the Global Economy",color="light", 
+    style={'textAlign':'center',"color": "white","fontSize": "40px"},className="m-5"),
+
+ 
+        dbc.Col([html.Hr(style={"color": "white"}), html.H3("ETUDE DE L'IMPACT DE lA COVID PAR PAYS", 
+        style={'textAlign':'center',"color": "blue"}), html.Hr(style={"color": "white"}), 
+
+                        dcc.Dropdown(id='dropdown-3', multi=False, className="four columns",style={'color':"blue"},
                                     options=[{'label':name, 'value':name} for name in countries],
                                     value = countries[68]),
-                            dcc.Checklist(id="checklist-1",
-                                    options=[   {'label': 'Total Cases', 'value': 'TC'},
-                                                {'label': 'Total Deaths', 'value': 'TD'},],
-                                    value=['TC','TD'],
-                                    labelStyle={'display': 'block'}),
-                    html.Div([ 
-                    html.Div(dcc.Graph(id='graph-4'), className="four columns"),], className="row"),
 
-            ]), width=8),
+                        html.Br(), html.Br(),
 
-            dbc.Col(html.Div(id='page-3-content')),
-            dbc.Col(html.Div(dcc.Link('Go at home ', href='/'),), style={'textAlign':'right'}, width=3),
-            dbc.Col(html.Div(dcc.Link('Go to Page 2 ', href='/page-2'),), style={'textAlign':'left'}, width=3)
-        ]), 
+                        dcc.Checklist(id="checklist-1",
+                                options=[   {'label': 'Total Cases', 'value': 'TC'},
+                                        {'label': 'Total Deaths', 'value': 'TD'},],
+                                value=['TC','TD'],
+                                labelStyle={'display': 'block'}),
+
+                    
+                html.Div(dcc.Graph(id='graph-4'),)
+
+            ]),
+###################################################################################################
+
+        dbc.Row([
+        dbc.Button(dcc.Link('Go to Page 2', href='/page-2'),outline=True, color="warning", 
+                style={"vertical-align": "left"}, className="mr-1"),
+
+        dbc.Button(dcc.Link('Go to Page 4', href='/page-4'),outline=True, color="success",
+                    style={"vertical-align": "right"}, className="mr-1"),
+
+        dbc.Button(dcc.Link('Go at home', href='/'),outline=True, color="danger",
+                    style={"vertical-align": "right"}, className="mr-1"),
+    ]), 
         
     ])
